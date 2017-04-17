@@ -144,7 +144,7 @@ public class JwtService implements Serializable {
      **/
 
 
-    //    만료 날짜 생성, 발급 날짜에서 30분 더해서 반환
+    //    만료 날짜 생성, 발급 날짜에서 변수 시간 더해서 반환
     private Date generateExpirationDate(Date issuedDate) {
         Date expirationDate;
         Calendar calendar = Calendar.getInstance();
