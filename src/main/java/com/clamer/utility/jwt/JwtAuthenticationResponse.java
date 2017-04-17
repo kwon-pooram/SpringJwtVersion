@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class JwtAuthenticationResponse implements Serializable {
 
-//    JWT 인증시 반환에 사용되는 객체
+//    JWT 인증 리스펀스 객체
 
     private final String token;
 

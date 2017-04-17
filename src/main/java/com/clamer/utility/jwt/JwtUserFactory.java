@@ -1,5 +1,6 @@
 package com.clamer.utility.jwt;
 
+import com.clamer.domain.JwtUser;
 import com.clamer.domain.entity.Authority;
 import com.clamer.domain.entity.User;
 import org.springframework.security.core.GrantedAuthority;
@@ -9,6 +10,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public final class JwtUserFactory {
+
+//    Jwt 유저 객체 바로 호출하지 않고 팩토리 객체 호출로 객체 생성
 
     private JwtUserFactory() {
     }
@@ -22,6 +25,8 @@ public final class JwtUserFactory {
                 mapToGrantedAuthorities(user.getAuthorities()),
                 user.isEnabled(),
                 user.isAccountNonLocked(),
+                user.isAccountNonExpired(),
+                user.isCredentialsNonExpired(),
                 user.getPasswordUpdatedAt()
         );
     }

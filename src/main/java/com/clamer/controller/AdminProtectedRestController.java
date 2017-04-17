@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("protected")
-public class MethodProtectedRestController {
+public class AdminProtectedRestController {
 
     @RequestMapping(method = RequestMethod.GET)
 //    사용자 권한에 따라서 메소드 단위로 허용 범위 설정

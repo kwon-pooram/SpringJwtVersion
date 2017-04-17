@@ -1,8 +1,8 @@
 package com.clamer.service;
 
-import com.clamer.utility.jwt.JwtUserFactory;
 import com.clamer.domain.entity.User;
 import com.clamer.domain.repository.UserRepository;
+import com.clamer.utility.jwt.JwtUserFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/layout">
+
+<th:block layout:fragment="description">
+    <title>My Page</title>
+</th:block>
+
+<th:block layout:fragment="css">
+
+</th:block>
+
+
+<th:block layout:fragment="script">
+
+</th:block>
+
+<div class="container" layout:fragment="content">
+    <h1>My Page</h1>
+
+    <a th:href="@{/user/confirmCurrentLoggedInUser}">Update my profile</a>
+
+</div>
+
+</html>

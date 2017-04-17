@@ -15,23 +15,27 @@ import java.util.Date;
 class BaseEntity implements Serializable{
 
 //    엔티티 공용 요소
-//    ID (PK), 생성 날짜, 마지막 업데이트 날짜
 
+//    ID (Primary key)
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+//    생성 시간
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date createdAt;
 
+//    마지막 업데이트 시간
     @Temporal(value = TemporalType.TIMESTAMP)
     private Date updatedAt;
 
+//    DB 저장 전 수행 메소드
     @PrePersist
     void onCreate() {
         this.createdAt = this.updatedAt = new Date();
     }
 
+//    DB 업데이트 전 수행 메소드
     @PreUpdate
     void onUpdate() {
         this.updatedAt = new Date();

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+
+<div class="container" th:fragment="headerFragment" style="padding-bottom: 50px;">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#mainNavBar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!--<a class="navbar-brand" th:href="@{/home}">CLAMER</a>-->
+            </div>
+            <div class="collapse navbar-collapse" id="mainNavBar">
+                <ul class="nav navbar-nav">
+                    <!--<li>-->
+                        <!--<a th:href="@{/photographer/photoList}">Photographer</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<a th:href="@{/studio/studioList}">Studio</a>-->
+                    <!--</li>-->
+                    <!--<li>-->
+                        <!--<a th:href="@{/user/myPage}">My page</a>-->
+                    <!--</li>-->
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <!--<li sec:authorize="hasRole('ROLE_ADMIN')">-->
+                        <!--<a th:href="@{/admin/adminIndex}">Admin page</a>-->
+                    <!--</li>-->
+                    <!--<li sec:authorize="!isAuthenticated()">-->
+                        <!--<a th:href="@{/registration}"><span class="glyphicon glyphicon-user"></span> Sign Up</a>-->
+                    <!--</li>-->
+                    <!--<li sec:authorize="!isAuthenticated()">-->
+                        <!--<a th:href="@{/login}"><span class="glyphicon glyphicon-log-in"></span>Login</a>-->
+                    <!--</li>-->
+                    <!--<li sec:authorize="isAuthenticated()">-->
+                        <!--<form th:action="@{/logout}" id="logoutForm" method="post">-->
+                            <!--<a href="javascript:{}" onclick="document.getElementById('logoutForm').submit();">Logout</a>-->
+                        <!--</form>-->
+                    <!--</li>-->
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+
+</html>

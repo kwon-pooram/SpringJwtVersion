@@ -2,11 +2,9 @@ package com.clamer.domain.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.hibernate.validator.constraints.Email;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -30,15 +28,21 @@ public class User extends BaseEntity implements Serializable {
     @Transient // 회원 가입시 비밀번호 재확인 (DB 저장 안함)
     private String passwordConfirmation;
 
-    @Column(columnDefinition = "boolean default true") // 계정 잠김 여부 (비밀번호 입력 몇 회 이상 실패시 계정 잠김)
+    @Column(columnDefinition = "boolean default true") // 자격 만료 여부 (토큰 만료)
+    private boolean credentialsNonExpired;
+
+    @Column(columnDefinition = "boolean default true") // 계정 만료 여부 (사용처 미정)
+    private boolean accountNonExpired;
+
+    @Column(columnDefinition = "boolean default true") // 계정 잠김 여부
     private boolean accountNonLocked;
 
-    @Column(columnDefinition = "boolean default true") // 계정 활성화 여부 (이메일 인증 여부)
+    @Column(columnDefinition = "boolean default true") // 계정 활성화 여부 (이메일 인증)
     private boolean enabled;
 
 
     @Temporal(TemporalType.TIMESTAMP)
-    @NotNull // 비밀번호 마지막 업데이트 날짜
+    @NotNull // 비밀번호 마지막 업데이트 날짜 (비밀번호 변경시 기존에 발급된 토큰 사용 불가)
     private Date passwordUpdatedAt;
 
 

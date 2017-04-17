@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div class="modal fade error-modal" id="errorModal" authority="dialog" th:fragment="errorModalFragment">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+                <div class="modal-header error-modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span class="glyphicon glyphicon-minus-sign"></span>
+                    </button>
+                    <h3 class="modal-title error-modal-title">
+                        Error title
+                    </h3>
+                </div>
+                <div class="modal-body error-modal-body">
+                    <p>
+                        Error message
+                    </p>
+                </div>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+</html>

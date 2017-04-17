@@ -7,7 +7,7 @@ import java.io.Serializable;
  */
 public class  JwtAuthenticationRequest implements Serializable {
 
-//    JWT 인증시 사용되는 리퀘스트 객체
+//    JWT 인증 리퀘스트 객체
 
     private String username;
     private String password;

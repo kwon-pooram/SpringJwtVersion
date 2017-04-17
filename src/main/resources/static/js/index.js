@@ -4,7 +4,7 @@
 
 $(function () {
     // VARIABLES =============================================================
-    var TOKEN_KEY = "jwtToken"
+    var TOKEN_KEY = "jwtToken";
     var $notLoggedIn = $("#notLoggedIn");
     var $loggedIn = $("#loggedIn").hide();
     var $response = $("#response");
@@ -35,7 +35,7 @@ $(function () {
                 setJwtToken(data.token);
                 $login.hide();
                 $notLoggedIn.hide();
-                showTokenInformation()
+                showTokenInformation();
                 showUserInformation();
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -46,7 +46,7 @@ $(function () {
                         .empty()
                         .html("<p>Spring exception:<br>" + jqXHR.responseJSON.exception + "</p>");
                 } else {
-                    throw new Error("an unexpected error occurred: " + errorThrown);
+                    throw new Error("an unexpected error occured: " + errorThrown);
                 }
             }
         });
@@ -96,6 +96,11 @@ $(function () {
 
                 $userInfoBody.append($authorities);
                 $userInfo.show();
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                if (jqXHR.status === 401) {
+                    doLogout();
+                }
             }
         });
     }
@@ -161,8 +166,8 @@ $(function () {
 
     $loggedIn.click(function () {
         $loggedIn
-                .toggleClass("text-hidden")
-                .toggleClass("text-shown");
+            .toggleClass("text-hidden")
+            .toggleClass("text-shown");
     });
 
     // INITIAL CALLS =============================================================

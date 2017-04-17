@@ -1,31 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>JWT Spring Security Demo</title>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/layout">
 
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
-          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+<th:block layout:fragment="description">
+    <title>Home Page</title>
+</th:block>
 
-    <!-- Optional theme -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
-          integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-
+<th:block layout:fragment="css">
     <style type="text/css">
-       .text-hidden {
-          text-overflow: ellipsis;
-          overflow: hidden;
-          white-space: nowrap;
-       }
+        .text-hidden {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
 
-       .text-shown {
-          word-wrap: break-word;
-       }
+        .text-shown {
+            word-wrap: break-word;
+        }
     </style>
-</head>
-<body>
-<div class="container">
+</th:block>
+
+
+<th:block layout:fragment="script">
+    <script src="/js/index.js"></script>
+</th:block>
+
+<div class="container" layout:fragment="content">
     <h1>JWT Spring Security Demo</h1>
 
     <div class="alert alert-danger" id="notLoggedIn">Not logged in!</div>
@@ -42,17 +43,16 @@
                     <form id="loginForm">
                         <div class="form-group">
                             <input type="text" class="form-control" id="exampleInputEmail1" placeholder="username"
-                                   required name="username">
+                                   required="required" name="username"/>
                         </div>
                         <div class="form-group">
                             <input type="password" class="form-control" id="exampleInputPassword1"
-                                   placeholder="password" required name="password">
+                                   placeholder="password" required="required" name="password"/>
                         </div>
                         <div class="well">
-                            로그인 계정
+                            로그인 가능 계정
                             <ul>
-                                <li>user1 / user1  : ADMIN , USER 권한 계정</li>
-
+                               <li>user1 / user1 : USER, ADMIN 계정</li>
                             </ul>
                         </div>
                         <button type="submit" class="btn btn-default">login</button>
@@ -88,29 +88,24 @@
             </div>
         </div>
     </div>
+
+
+    <div class="modal fade" tabindex="-1" role="dialog" id="loginErrorModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title">Login unsuccessful</h4>
+                </div>
+                <div class="modal-body"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </div>
 
-<div class="modal fade" tabindex="-1" role="dialog" id="loginErrorModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Login unsuccessful</h4>
-            </div>
-            <div class="modal-body"></div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-<script src="https://code.jquery.com/jquery-2.2.2.js" integrity="sha256-4/zUCqiq0kqxhZIyp4G0Gk+AOtCJsY1TA00k5ClsZYE="
-        crossorigin="anonymous"></script>
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
-        integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
-        crossorigin="anonymous"></script>
-<script src="js/client.js"></script>
-</body>
 </html>
