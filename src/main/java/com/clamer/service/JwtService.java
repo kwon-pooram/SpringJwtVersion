@@ -31,8 +31,9 @@ public class JwtService implements Serializable {
 
     //    토큰 발급자
     private static final String CLAIM_KEY_ISSUER = "clamer";
+
     //    만료 날짜에 더할 시간
-    private static final int TOKEN_VALIDITY_PERIOD_IN_MINUTES = 1;
+    private static final int TOKEN_VALIDITY_PERIOD_IN_MINUTES = 30;
 
 
     //    접속 기기 종류

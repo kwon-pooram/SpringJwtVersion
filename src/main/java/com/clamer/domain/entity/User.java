@@ -31,10 +31,10 @@ public class User extends BaseEntity implements Serializable {
     @Column(columnDefinition = "boolean default true") // 자격 만료 여부 (토큰 만료)
     private boolean credentialsNonExpired;
 
-    @Column(columnDefinition = "boolean default true") // 계정 만료 여부 (사용처 미정)
+    @Column(columnDefinition = "boolean default true") // 계정 만료 여부 (사용 미정)
     private boolean accountNonExpired;
 
-    @Column(columnDefinition = "boolean default true") // 계정 잠김 여부
+    @Column(columnDefinition = "boolean default true") // 계정 잠김 여부 (사용 미정)
     private boolean accountNonLocked;
 
     @Column(columnDefinition = "boolean default true") // 계정 활성화 여부 (이메일 인증)

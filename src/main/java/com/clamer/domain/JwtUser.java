@@ -14,9 +14,12 @@ import java.util.Date;
 @Getter
 public class JwtUser implements UserDetails {
 
-//    User 엔티티를 가져와서 DTO 역할 담당하는 JWT 유저 객체로 반환
-//    어노테이션을 통해서 리스펀스로 보낼 정보 수정 용이해짐
+//    User 엔티티를 DTO 역할 담당하는 JWT 유저 객체로 반환
+//    어노테이션을 통해서 리스펀스로 보낼 정보 수정 용이
 
+
+
+//    @JsonIgnore : JSON 반환시 포함되지 않음
     @JsonIgnore
     private final Long id;
     @JsonIgnore
@@ -34,7 +37,7 @@ public class JwtUser implements UserDetails {
     private final Date passwordUpdatedAt;
 
 
-    JwtUser(
+    public JwtUser(
             Long id,
             String username,
             String email,

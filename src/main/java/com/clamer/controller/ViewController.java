@@ -12,7 +12,9 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class ViewController {
 
-    @RequestMapping(value = {"/", "/index"}, method = RequestMethod.GET)
+//    뷰 등록 전용 컨트롤러
+
+    @RequestMapping(value = {"/"}, method = RequestMethod.GET)
     public ModelAndView index() {
         return new ModelAndView("index");
     }

@@ -4,12 +4,12 @@
 
 $(function () {
     // VARIABLES =============================================================
-    var TOKEN_KEY = "jwtToken";
-    var $notLoggedIn = $("#notLoggedIn");
-    var $loggedIn = $("#loggedIn").hide();
-    var $response = $("#response");
-    var $login = $("#login");
-    var $userInfo = $("#userInfo").hide();
+    const TOKEN_KEY = "jwtToken";
+    const $notLoggedIn = $("#notLoggedIn");
+    const $loggedIn = $("#loggedIn").hide();
+    const $response = $("#response");
+    const $login = $("#login");
+    const $userInfo = $("#userInfo").hide();
 
     // FUNCTIONS =============================================================
     function getJwtToken() {
@@ -32,6 +32,7 @@ $(function () {
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (data, textStatus, jqXHR) {
+                console.log(data.token);
                 setJwtToken(data.token);
                 $login.hide();
                 $notLoggedIn.hide();
@@ -66,7 +67,7 @@ $(function () {
     }
 
     function createAuthorizationTokenHeader() {
-        var token = getJwtToken();
+        const token = getJwtToken();
         if (token) {
             return {"Authorization": token};
         } else {
@@ -82,16 +83,16 @@ $(function () {
             dataType: "json",
             headers: createAuthorizationTokenHeader(),
             success: function (data, textStatus, jqXHR) {
-                var $userInfoBody = $userInfo.find("#userInfoBody");
+                const $userInfoBody = $userInfo.find("#userInfoBody");
 
                 $userInfoBody.append($("<div>").text("Username: " + data.username));
                 $userInfoBody.append($("<div>").text("Email: " + data.email));
 
-                var $authorityList = $("<ul>");
+                const $authorityList = $("<ul>");
                 data.authorities.forEach(function (authorityItem) {
                     $authorityList.append($("<li>").text(authorityItem.authority));
                 });
-                var $authorities = $("<div>").text("Authorities:");
+                const $authorities = $("<div>").text("Authorities:");
                 $authorities.append($authorityList);
 
                 $userInfoBody.append($authorities);
@@ -122,8 +123,8 @@ $(function () {
     $("#loginForm").submit(function (event) {
         event.preventDefault();
 
-        var $form = $(this);
-        var formData = {
+        const $form = $(this);
+        const formData = {
             username: $form.find('input[name="username"]').val(),
             password: $form.find('input[name="password"]').val()
         };

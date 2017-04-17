@@ -13,7 +13,7 @@ public final class JwtUserFactory {
 
 //    Jwt 유저 객체 바로 호출하지 않고 팩토리 객체 호출로 객체 생성
 
-    private JwtUserFactory() {
+    public JwtUserFactory() {
     }
 
     public static JwtUser create(User user) {

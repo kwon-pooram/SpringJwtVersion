@@ -17,8 +17,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-
-@SuppressWarnings("SpringJavaAutowiringInspection")
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
@@ -49,7 +47,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
         authenticationManagerBuilder
+//                유저 디테일 서비스 등록
                 .userDetailsService(this.jwtUserDetailsService)
+//                패스워드 인코더 등록
                 .passwordEncoder(bCryptPasswordEncoder());
     }
 
@@ -57,15 +57,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
 //                CSRF 비활성화
+//                토큰 인증 방식 사용시 불필요함
                 .csrf()
                 .disable()
 
-//                미인증 사용자 처리
+//                미인증 사용자 처리 핸들러 등록
                 .exceptionHandling()
                 .authenticationEntryPoint(unauthorizedUserHandler)
                 .and()
 
 //                세션 생성 안함
+//                STATELESS : 세션 생성하지도, 사용하지도 않음
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
@@ -75,11 +77,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //                인증 불필요한 리소스 허용 처리
                 .antMatchers(
                         HttpMethod.GET,
-                        "/*.html",
-                        "/**/*.html",
                         "/favicon.ico",
-                        "/**/*.css",
-                        "/**/*.js"
+                        "/js/**",
+                        "/css/**"
                 ).permitAll()
 
 //                인증 URI
