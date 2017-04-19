@@ -74,7 +74,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests()
 
-//                인증 불필요한 리소스 허용 처리
+
+                /**
+                 * 리소스 URI
+                 * */
                 .antMatchers(
                         HttpMethod.GET,
                         "/favicon.ico",
@@ -82,12 +85,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/css/**"
                 ).permitAll()
 
-//                인증 URI
+                /**
+                 * 인증 URI
+                 * */
                 .antMatchers("/auth/**","/refresh").permitAll()
 
-//                뷰 URI
-//                INDEX
+                /**
+                 * 인증 불필요한 URI
+                 * */
+                .antMatchers(HttpMethod.POST,"/ajaxReactiveSearch").permitAll()
+                .antMatchers(HttpMethod.GET,"/getAllUsername").permitAll()
+                /**
+                 * 뷰 URI
+                 * */
                 .antMatchers(HttpMethod.GET,"/", "/index").permitAll()
+                .antMatchers(HttpMethod.GET,"/login").permitAll()
+
+
 
                 .anyRequest()
                 .authenticated();

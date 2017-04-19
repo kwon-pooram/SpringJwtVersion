@@ -1,9 +1,0 @@
-.text-hidden {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-}
-
-.text-shown {
-    word-wrap: break-word;
-}

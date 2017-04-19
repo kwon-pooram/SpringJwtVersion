@@ -71,5 +71,24 @@ public class JwtApplication implements CommandLineRunner {
 		userRepository.save(user1);
 
 
+//		user2
+		List<Authority> authorityListForUser2 = new ArrayList<>();
+		authorityListForUser2.add(userAuthority);
+
+		User user2 = new User();
+		user2.setEmail("user2@test.com");
+		user2.setUsername("user2");
+		user2.setPassword(bCryptPasswordEncoder.encode("user2"));
+
+		user2.setEnabled(true);
+		user2.setCredentialsNonExpired(true);
+		user2.setAccountNonExpired(true);
+		user2.setAccountNonLocked(true);
+
+		user2.setPasswordUpdatedAt(new Date());
+		user2.setAuthorities(authorityListForUser2);
+
+		userRepository.save(user2);
+
 	}
 }

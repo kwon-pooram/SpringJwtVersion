@@ -51,6 +51,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 logger.info("[" + username + "] 사용자 인증 완료");
             }
+        } else {
+            logger.info("[" + username + "] 사용자 인증 실패");
         }
         chain.doFilter(request, response);
     }

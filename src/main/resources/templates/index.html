@@ -1,105 +1,233 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8"/>
-    <title>CLAMER</title>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/layout">
 
-    <!-- Bootstrap CSS -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          rel="stylesheet"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
-          crossorigin="anonymous"/>
-</head>
-<body>
-<div class="container">
-    <h1>JWT Spring Security Demo</h1>
+<th:block layout:fragment="description">
+    <title>Home Page</title>
+</th:block>
 
-    <div class="alert alert-danger" id="notLoggedIn">Not logged in!</div>
+<th:block layout:fragment="css">
+    <link href="/css/index.css" rel="stylesheet"/>
+</th:block>
 
-    <div class="alert alert-info text-hidden" id="loggedIn"></div>
 
+<th:block layout:fragment="script">
+</th:block>
+
+<div class="container" layout:fragment="content">
     <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-default" id="login">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Login</h3>
-                </div>
-                <div class="panel-body">
-                    <form id="loginForm">
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="exampleInputEmail1" placeholder="username"
-                                   name="username" required="required"/>
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="exampleInputPassword1"
-                                   placeholder="password" name="password" required="required"/>
-                        </div>
-                        <div class="well">
-                            유저 목록
-                            <ul>
-                                <li>user1 / user1 : USER, ADMIN</li>
-                            </ul>
-                        </div>
-                        <button type="submit" class="btn btn-default">login</button>
-                    </form>
+
+        <!-- 왼쪽 -->
+        <div class="col-sm-12 col-md-4 col-lg-4">
+            <div class="card card-outline-info mb-3">
+                <div class="card-block">
+                    <h3 class="card-title"> 유저 목록</h3>
+                    <div class="card-text">
+                        <ul>
+                            <li>
+                                user1 / user1 : USER, ADMIN
+                            </li>
+                            <li>
+                                user2 / user2 : USER
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-
-            <div id="userInfo">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Authenticated user</h3>
-                    </div>
-                    <div class="panel-body">
-                        <div id="userInfoBody"></div>
-                        <button type="button" class="btn btn-default" id="logoutButton">logout</button>
+            <div class="card card-outline-danger mb-3">
+                <div class="card-block">
+                    <h3 class="card-title"> 현재 접속한 유저 정보</h3>
+                    <div class="card-text">
+                        <ul id="currentLoggedInUserInfo" style="overflow: auto;">
+                            <li>비로그인 상태입니다</li>
+                        </ul>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div class="col-md-6">
-            <div class="btn-group" role="group" aria-label="..." style="margin-bottom: 16px;">
-                <button type="button" class="btn btn-default" id="exampleServiceBtn">call example service</button>
-                <button type="button" class="btn btn-default" id="adminServiceBtn">call admin protected service</button>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Response:</h3>
+        <!-- 오른쪽 -->
+        <div class="col-sm-12 col-md-8 col-lg-8">
+            <h1>서버 요청 테스트</h1>
+            <div id="serverRequestTestAccordion" role="tablist" aria-multiselectable="true">
+                <div class="card">
+                    <div class="card-header" role="tab" id="ajaxReactiveSearchHeader">
+                        <button type="button" class="btn btn-success btn-block collapsed" data-toggle="collapse"
+                                data-parent="#serverRequestTestAccordion"
+                                data-target="#ajaxReactiveSearch" aria-expanded="false" aria-controls="collapseOne">
+                            AJAX 반응형 검색
+                        </button>
+                    </div>
+                    <div id="ajaxReactiveSearch" class="collapse show" role="tabpanel"
+                         aria-labelledby="ajaxReactiveSearchHeader">
+                        <div class="card card-inverse card-primary">
+                            <div class="card-block">
+                                <h3 class="card-title">데이터베이스에서 사용자 검색</h3>
+                                <div class="form-group">
+                                    <label for="ajaxReactiveSearch-username">
+                                        Username
+                                    </label>
+                                    <input type="text" class="form-control" id="ajaxReactiveSearch-username"
+                                           placeholder="Username"/>
+                                </div>
+                                <div class="card-text">
+                                    <p>검색 결과</p>
+                                    <div id="ajaxReactiveSearch-result">
+                                    </div>
+                                    <hr/>
+                                    <p>상세 정보</p>
+                                    <ul id="ajaxReactiveSearch-details">
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div class="panel-body">
-                    <pre id="response"></pre>
+                <div class="card">
+                    <div class="card-header" role="tab" id="funcRestrictedByAuthHeader">
+                        <button type="button" class="btn btn-success btn-block collapsed" data-toggle="collapse"
+                                data-parent="#serverRequestTestAccordion"
+                                data-target="#funcRestrictedByAuth"
+                                aria-expanded="false" aria-controls="collapseTwo">
+                            계정 권한에 따른 요청 제한
+                        </button>
+                    </div>
+                    <div id="funcRestrictedByAuth" class="collapse" role="tabpanel"
+                         aria-labelledby="funcRestrictedByAuthHeader">
+                        <div class="card card-inverse card-primary">
+                            <div class="card-block">
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-secondary" id="funcRestrictedByAuth-public">No
+                                        authority
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" id="funcRestrictedByAuth-adminOnly">
+                                        Admin only
+                                    </button>
+                                    <button type="button" class="btn btn-secondary" id="funcRestrictedByAuth-userOnly">
+                                        User only
+                                    </button>
+                                    <button type="button" class="btn btn-secondary"
+                                            id="funcRestrictedByAuth-requiredBoth">Required both
+                                    </button>
+                                </div>
+                                <div class="card-text">
+                                    <hr/>
+                                    <p>요청 결과</p>
+                                    <div class="card">
+                                        <div class="card-block" id="funcRestrictedByAuth-result">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" role="tab" id="headingThree">
+                        <button class="btn btn-success btn-block collapsed" data-toggle="collapse"
+                                data-parent="#serverRequestTestAccordion"
+                                data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            이건 글쎄..
+                        </button>
+                    </div>
+                    <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+                        <div class="card-block">
+                            아직 미정...
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <script>
+
+        const userInfoView = $("#currentLoggedInUserInfo");
+        const ajaxReactiveSearchResult = $("#ajaxReactiveSearch-result");
+        const ajaxReactiveSearchUsername = $("#ajaxReactiveSearch-username");
+        let usernames = [];
+
+        $(document).ready(function () {
+            if (getJwtToken()) {
+                // 페이지 로딩시 로컬 스토리지에 토큰이 존재하면 현재 접속한 사용자 정보 뷰 표시
+                showCurrentLoggedInUserInfo();
+            } else {
+                // 토큰 없으면 현재 로그인 사용자 정보 뷰 클리어
+                clearLoggedInUserInfo();
+            }
+        });
+
+        // 현재 로그인 한 사용자 정보 호출 함수
+        function showCurrentLoggedInUserInfo() {
+            $.ajax({
+                url: "/user",
+                type: "GET",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                headers: createAuthorizationTokenHeader(),
+                success: function (data, textStatus, jqXHR) {
+                    $("#ajaxReactiveSearch-result").empty();
+
+                    userInfoView.append($("<li></li>").text("Username: " + data.username));
+                    userInfoView.append($("<li></li>").text("Email: " + data.email));
+                    userInfoView.append($("<li></li>").text("Token: " + getJwtToken()));
+
+                    data.authorities.forEach(function (authorityItem) {
+                        userInfoView.append($("<li></li>").text("Authority: " + authorityItem.authority));
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    if (jqXHR.status === 401) {
+                        logout();
+                    }
+                }
+            });
+        }
+
+        function clearLoggedInUserInfo() {
+            userInfoView.empty();
+            userInfoView.append($("<li></li>").text("비로그인 상태입니다"));
+        }
+
+
+        // AJAX 반응형 검색 입력 칸 선택시 호출되는 함수
+        // 데이터베이스에서 유저 이름 가져오기
+        ajaxReactiveSearchUsername.focus(function () {
+            if (usernames.length === 0) {
+                $.ajax({
+                    url: "/getAllUsername",
+                    type: "GET",
+                    success: function (data, textStatus, jqXHR) {
+                        console.log("[AJAX Reactive Search : 사용자 목록 가져오기 성공]");
+                        data.forEach(function (username) {
+                            usernames.push(username);
+                        });
+                        console.log(usernames);
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log("[AJAX Reactive Search : 사용자 목록 가져오기 실패]");
+                    }
+                });
+            } else {
+                return null;
+            }
+        });
+
+        //        AJAX 반응형 검색 입력 칸 자동 완성
+        ajaxReactiveSearchUsername.autocomplete({
+            source: usernames
+        }).autocomplete("instance")._renderItem = function (ajaxReactiveSearchResult, item) {
+            return $(ajaxReactiveSearchResult)
+                .append( "<li>" + item.value + "</li>" )
+                .appendTo( ajaxReactiveSearchResult );
+        };
+    </script>
 </div>
 
-<div class="modal fade" tabindex="-1" role="dialog" id="loginErrorModal">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
-                </button>
-                <h4 class="modal-title">Login unsuccessful</h4>
-            </div>
-            <div class="modal-body"></div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-
-<script src="https://code.jquery.com/jquery-3.2.1.min.js"
-        integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
-        crossorigin="anonymous"></script>
-
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
-
-<script src="/js/main.js"></script>
-
-</body>
 </html>
