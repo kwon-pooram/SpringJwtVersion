@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/layout">
+
+<th:block layout:fragment="description">
+    <title>Home Page</title>
+</th:block>
+
+<th:block layout:fragment="css">
+    <link href="/css/login.css" rel="stylesheet"/>
+</th:block>
+<th:block layout:fragment="script">
+</th:block>
+
+<div class="container" layout:fragment="content">
+    <h1>LOGIN</h1>
+    <form id="loginForm">
+        <div class="card card-inverse card-danger" id="loginForm-error" style="margin: 30px; display: none;">
+            <div class="card-block">
+                <h2 class="card-title">오류가 발생했습니다</h2>
+                <p class="card-text"></p>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="loginUsername" class="col-sm-2 col-form-label">Username</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="loginUsername" placeholder="Username" required="required"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="loginPassword" class="col-sm-2 col-form-label">Password</label>
+            <div class="col-sm-10">
+                <input type="password" class="form-control" id="loginPassword" placeholder="Password"
+                       required="required"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="offset-sm-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">로그인</button>
+                <br/>
+                <a th:href="@{/registration}">Registration</a>
+            </div>
+        </div>
+    </form>
+
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+
+    <script>
+
+        // 로그인 폼 submit 함수
+        $("#loginForm").submit(function (event) {
+            event.preventDefault();
+
+            // 사용자 입력 정보 가져오기
+            let formData = {
+                username: $("#loginUsername").val(),
+                password: $("#loginPassword").val()
+            };
+            // 로그인 함수 호출
+            submitLoginForm(formData);
+            // 입력 정보 삭제
+            $(":input", $(this)).val("");
+        });
+
+
+        // 로그인 함수
+        function submitLoginForm(formData) {
+            $.ajax({
+                url: "/auth",
+                type: "POST",
+                data: JSON.stringify(formData),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data, textStatus, jqXHR) {
+                    console.log("[로그인 성공]");
+
+                    // 로그인 성공시 토큰 저장
+                    setJwtToken(data.token);
+
+                    // 인덱스 화면 리디렉트
+                    window.location.replace("/index");
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+
+                    /**
+                     * 에러 처리 :  Response Status 따라서 다른 에러 처리
+                     * */
+
+                    // 401 에러 : 접근 권한 없음
+                    if (jqXHR.status === 401) {
+                        console.log("[로그인 에러] : 401");
+
+                        // 에러 뷰 표시
+                        const errorView = $("#loginForm-error");
+                        errorView
+                            .find(".card-text")
+                            .empty()
+                            .html(`
+                                   입력하신 정보와 일치하는 사용자가 없습니다.<br/>
+                                   다시 시도해 주세요.<br/>
+                                   <button type="button" class="btn btn-secondary" id="forgotUserInfoBtn"
+                                   onclick="window.location.replace('/index');">
+                                        아이디 / 비밀번호 찾기
+                                   </button>
+                                 `);
+                        errorView
+                            .show();
+                    } else {
+                        throw new Error("[로그인 에러] : " + errorThrown);
+                    }
+                }
+            });
+        }
+    </script>
+</div>
+</html>

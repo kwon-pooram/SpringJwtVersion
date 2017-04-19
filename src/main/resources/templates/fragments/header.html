@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div class="container" th:fragment="headerFragment" style="padding-bottom: 100px;">
+    <nav class="navbar navbar-toggleable-md fixed-top navbar-light bg-faded">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false"
+                aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" th:href="@{/index}">CLAMER</a>
+
+        <div class="collapse navbar-collapse" id="navbarToggler">
+            <ul class="navbar-nav mr-auto mt-2 mt-md-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">PHOTOGRAPHER</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">STUDIO</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">COLLECTIONS</a>
+                </li>
+            </ul>
+        </div>
+
+        <a href="#" class="btn btn-primary" role="button" id="navbar-loginBtn">
+            <i class="fa fa-sign-in" aria-hidden="true"></i>로그인
+        </a>
+
+        <a href="#" class="btn btn-primary" role="button" id="navbar-logoutbtn">
+            <i class="fa fa-sign-out" aria-hidden="true"></i>로그아웃
+        </a>
+    </nav>
+
+    <script>
+
+        const loginBtn = $("#navbar-loginBtn");
+        const logoutBtn = $("#navbar-logoutbtn");
+
+
+        // 로컬 스토리지 토큰 유무에 따라서 버튼 변경
+        $(document).ready(function () {
+            if (getJwtToken()) {
+                logoutBtn.show();
+                loginBtn.hide();
+            } else {
+                loginBtn.show();
+                logoutBtn.hide();
+            }
+        });
+
+        // 로그인 버튼 선택시 호출 함수
+        loginBtn.click(function (event) {
+
+            event.preventDefault();
+
+            if (getJwtToken()) {
+                if (window.confirm("이미 로그인 상태입니다.\n기존 로그인 정보가 삭제됩니다. 진행하시겠습니까?") === true) {
+                    // 기존 로그인 정보 삭제 (토큰 삭제)
+                    removeJwtToken();
+                    // 로그인 화면 리디렉트
+                    window.location.replace("/login");
+                } else {
+                    return null;
+                }
+            } else {
+                // 로그인 화면 리디렉트
+                window.location.replace("/login");
+            }
+        });
+
+        // 로그아웃 버튼 선택시 호출 함수
+        logoutBtn.click(function (event) {
+            event.preventDefault();
+            logout();
+        });
+    </script>
+</div>
+
+</html>
