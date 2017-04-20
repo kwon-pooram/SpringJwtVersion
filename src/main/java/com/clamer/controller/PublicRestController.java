@@ -1,10 +1,9 @@
 package com.clamer.controller;
 
-import com.clamer.domain.JwtUser;
 import com.clamer.domain.entity.User;
 import com.clamer.domain.repository.UserRepository;
-import com.clamer.service.JwtUserDetailsServiceImpl;
 import com.clamer.service.JwtService;
+import com.clamer.service.JwtUserDetailsServiceImpl;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
+@RequestMapping("/public")
 public class PublicRestController {
 
     private final Log logger = LogFactory.getLog(this.getClass());
@@ -34,16 +35,8 @@ public class PublicRestController {
         this.userRepository = userRepository;
     }
 
-    @RequestMapping(value = "ajaxReactiveSearch", method = RequestMethod.POST)
-    public List<User> ajaxReactiveSearch(@RequestParam String inputValue) {
-
-        logger.info("[AJAX REACTIVE SEARCH POST REQUEST] : " + inputValue);
-
-        return userRepository.findByUsernameIgnoreCaseContaining(inputValue);
-    }
-
     // 전체 회원 이름 목록 반환
-    @RequestMapping(value = "getAllUsername", method = RequestMethod.GET)
+    @RequestMapping(value = "/getAllUsername", method = RequestMethod.GET)
     public List<String> getAllUsername() {
 
         List<User> users = userRepository.findAll();
@@ -54,5 +47,11 @@ public class PublicRestController {
         return usernames;
     }
 
-
+    @RequestMapping(value = "/test", method = RequestMethod.GET)
+    public ResponseEntity<?> publicMethod() {
+        Map<String,String> messages = new HashMap<>();
+        messages.put("message1", "공용 메세지1");
+        messages.put("message2", "공용 메세지2");
+        return ResponseEntity.ok().body(messages);
+    }
 }

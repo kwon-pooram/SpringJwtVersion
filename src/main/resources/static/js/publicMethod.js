@@ -5,6 +5,9 @@
 
 // 전체 페이지 공통 사용 함수
 
+
+
+
 // 로컨 스토리지에서 토큰 가져오기
 function getJwtToken() {
     return localStorage.getItem("jwtToken");

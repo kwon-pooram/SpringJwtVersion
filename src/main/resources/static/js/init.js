@@ -44,7 +44,6 @@
 
 // JS 목록
 // const JAVASCRIPT_ARRAY = [
-//     "index.js",
 //     "parsley.min.js", // 클라이언트 사이드 폼 입력 값 검증 라이브러리
 // ];
 

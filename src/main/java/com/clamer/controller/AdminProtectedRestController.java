@@ -6,17 +6,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
-@RequestMapping("protected")
+@RequestMapping("/admin")
 public class AdminProtectedRestController {
 
-    @RequestMapping(method = RequestMethod.GET)
-//    사용자 권한에 따라서 메소드 단위로 허용 범위 설정
-//    실제 DB에 저장할때는 'ROLE_' 앞에 붙여서 저장
-//    ex) ROLE_ADMIN, ROLE_USER
+    //    사용자 권한에 따라서 메소드 단위로 허용 범위 설정
+    //    실제 DB에 저장할때는 'ROLE_' 앞에 붙여서 저장
+    //    ex) ROLE_ADMIN, ROLE_USER
+
     @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = {"/test"}, method = RequestMethod.GET)
     public ResponseEntity<?> getProtectedGreeting() {
-        return ResponseEntity.ok("어드민 계정만 호출 가능한 메소드");
+
+        Map<String,String> messages = new HashMap<>();
+        messages.put("message1", "어드민 전용 메세지1");
+        messages.put("message2", "어드민 전용 메세지2");
+        return ResponseEntity.ok().body(messages);
     }
 
 }

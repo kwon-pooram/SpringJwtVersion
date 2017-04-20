@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
+@RequestMapping("/auth")
 public class AuthenticationRestController {
 
 //    인증 및 JWT 컨트롤러
@@ -42,7 +43,7 @@ public class AuthenticationRestController {
     /**
      * 토큰 생성
      **/
-    @RequestMapping(value = "/auth", method = RequestMethod.POST)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
 
 //        기존 인증 과정, 토큰 방식 사용시 불필요

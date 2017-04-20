@@ -88,13 +88,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 /**
                  * 인증 URI
                  * */
-                .antMatchers("/auth/**","/refresh").permitAll()
+                .antMatchers("/auth/**").permitAll()
 
                 /**
                  * 인증 불필요한 URI
                  * */
-                .antMatchers(HttpMethod.POST,"/ajaxReactiveSearch").permitAll()
-                .antMatchers(HttpMethod.GET,"/getAllUsername").permitAll()
+                .antMatchers("/public/**").permitAll()
+
+                /**
+                 * 어드민 계정 전용 URI
+                 * */
+                .antMatchers("/admin/**").hasRole("ADMIN")
+
                 /**
                  * 뷰 URI
                  * */
