@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Serializable {
 
+//    미인증 사용자 처리 핸들러
 
     @Override
     public void commence(HttpServletRequest request,

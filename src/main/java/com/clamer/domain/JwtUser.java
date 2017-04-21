@@ -22,6 +22,7 @@ public class JwtUser implements UserDetails {
 //    @JsonIgnore : JSON 반환시 포함되지 않음
     @JsonIgnore
     private final Long id;
+
     @JsonIgnore
     private final String password;
 

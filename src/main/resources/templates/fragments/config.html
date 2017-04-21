@@ -15,8 +15,6 @@
           integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous"/>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-            integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"
             integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb"
             crossorigin="anonymous"></script>
@@ -25,18 +23,15 @@
             crossorigin="anonymous"></script>
 
     <!-- 공용 JS -->
-    <script src="/js/publicMethod.js"></script>
 
-    <!-- 클라이언트 사이드 폼 검증 라이브러리 -->
-    <script src="/js/parsley.min.js"></script>
+    <!-- 각 페이지 로딩시 JS, CSS 호출하는 함수 -->
+    <script src="/js/public/initializer.js"></script>
 
-    <!-- Custom CSS -->
-    <th:block layout:fragment="css">
-    </th:block>
+    <!-- 클라이언트 사이드 사용자 입력 검증 라이브러리 -->
+    <script src="/js/public/parsley.min.js"></script>
 
-    <!-- Custom JS -->
-    <th:block layout:fragment="script">
-    </th:block>
+    <!-- JWT 관련 -->
+    <script src="/js/public/jwt.js"></script>
 </head>
 
 </html>

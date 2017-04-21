@@ -7,14 +7,6 @@
     <title>Home Page</title>
 </th:block>
 
-<th:block layout:fragment="css">
-    <link href="/css/index.css" rel="stylesheet"/>
-</th:block>
-
-
-<th:block layout:fragment="script">
-</th:block>
-
 <div class="container" layout:fragment="content">
     <div class="row">
 
@@ -72,9 +64,9 @@
                                            placeholder="Username"/>
                                 </div>
                                 <div class="card-text">
-                                    <p>검색 결과</p>
-                                    <div id="ajaxReactiveSearch-result">
-                                    </div>
+                                    <p>검색 결과<span id="ajaxReactiveSearch-resultCount"></span></p>
+                                    <ul id="ajaxReactiveSearch-result" style="height:100px;overflow: auto;">
+                                    </ul>
                                     <hr/>
                                     <p>상세 정보</p>
                                     <ul id="ajaxReactiveSearch-details">
@@ -150,161 +142,47 @@
     <!---->
     <script>
 
-        const userInfoView = $("#currentLoggedInUserInfo");
-        const ajaxReactiveSearchResult = $("#ajaxReactiveSearch-result");
-        const ajaxReactiveSearchUsername = $("#ajaxReactiveSearch-username");
-        let usernames = [];
+        // JS 목록
+        const INDEX_JAVASCRIPT_ARRAY = [
+            "index.js"
+        ];
 
-        const funcRestrictedByAuth = $("#funcRestrictedByAuth");
-        const funcRestrictedByAuthResult = $("#funcRestrictedByAuth-result");
+        // CSS 목록
+        const INDEX_CSS_ARRAY = [
+            "index.css"
+        ];
 
         $(document).ready(function () {
-            if (getJwtToken()) {
-                // 페이지 로딩시 로컬 스토리지에 토큰이 존재하면 현재 접속한 사용자 정보 뷰 표시
-                showCurrentLoggedInUserInfo();
-            } else {
-                // 토큰 없으면 현재 로그인 사용자 정보 뷰 클리어
-                clearLoggedInUserInfo();
-            }
-        });
 
-        // 현재 로그인 한 사용자 정보 호출 함수
-        function showCurrentLoggedInUserInfo() {
-            $.ajax({
-                url: "/auth/user",
-                type: "GET",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                headers: createAuthorizationTokenHeader(),
-                success: function (data, textStatus, jqXHR) {
-                    userInfoView.empty();
-                    userInfoView.append($("<li></li>").text("Username: " + data.username));
-                    userInfoView.append($("<li></li>").text("Email: " + data.email));
-                    userInfoView.append($("<li></li>").text("Token: " + getJwtToken()));
-
-                    data.authorities.forEach(function (authorityItem) {
-                        userInfoView.append($("<li></li>").text("Authority: " + authorityItem.authority));
-                    });
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    if (jqXHR.status === 401) {
-                        logout();
-                    }
-                }
-            });
-        }
-
-        function clearLoggedInUserInfo() {
-            userInfoView.empty();
-            userInfoView.append($("<li></li>").text("비로그인 상태입니다"));
-        }
-
-
-        // AJAX 반응형 검색 입력 칸 선택시 호출되는 함수
-        // 데이터베이스에서 유저 이름 가져오기
-        ajaxReactiveSearchUsername.focus(function () {
-            if (usernames.length === 0) {
-                $.ajax({
-                    url: "/public/getAllUsername",
-                    type: "GET",
-                    success: function (data, textStatus, jqXHR) {
-                        console.log("[AJAX Reactive Search : 사용자 목록 가져오기 성공]");
-                        data.forEach(function (username) {
-                            usernames.push(username);
-                        });
-                        console.log(usernames);
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        console.log("[AJAX Reactive Search : 사용자 목록 가져오기 실패]");
-                    }
+            // CSS 로딩
+            CSS_LOADER(INDEX_CSS_ARRAY, "/css/")
+                .done(function () { // 호출 성공
+                    console.log("[인덱스 CSS 로딩 완료]");
+                })
+                .fail(function (error) { // 에러 발생
+                    console.log("[인덱스 CSS 로딩 에러]");
+                    console.log(error);
                 });
-            } else {
-                return null;
-            }
-        });
 
-        //        AJAX 반응형 검색 입력 칸 자동 완성
-        ajaxReactiveSearchUsername.autocomplete({
-            source: usernames
-        }).autocomplete("instance")._renderItem = function (ajaxReactiveSearchResult, item) {
-            return $(ajaxReactiveSearchResult)
-                .append("<li>" + item.value + "</li>")
-                .appendTo(ajaxReactiveSearchResult);
-        };
+            // JS 로딩
+            SCRIPT_LOADER(INDEX_JAVASCRIPT_ARRAY, "/js/")
+                .done(function () { // 호출 성공
+                    console.log("[인덱스 JAVASCRIPT 로딩 완료]");
 
 
-        // 메소드 응답 표시 함수
-        function showResponse(statusCode, data) {
-            funcRestrictedByAuthResult
-                .find(".card-text")
-                .empty()
-                .append("응답 코드 : " + statusCode)
-                .append(`<hr/>`);
+                    // 스크립트 로딩 완료 후 페이지에서 처리 할 내용
 
-            if (data === "401") {
-                funcRestrictedByAuthResult
-                    .find(".card-text")
-                    .append("로그인이 필요합니다!");
-            }
-            else if (data === "403") {
-                funcRestrictedByAuthResult
-                    .find(".card-text")
-                    .append("권한이 없습니다!");
-            }
-            else {
-                $.each(data, function (key, value) {
-                    funcRestrictedByAuthResult
-                        .find(".card-text")
-                        .append(key + " : " + value + "<br/>");
+                    if (getJwtToken()) { // 페이지 로딩시 로컬 스토리지에 토큰이 존재하면
+                        showCurrentLoggedInUserInfo(); // 현재 접속한 사용자 정보 뷰 표시
+                    } else { // 토큰 없으면
+                        clearLoggedInUserInfo(); // 현재 로그인 사용자 정보 뷰 클리어
+                    }
+                })
+                .fail(function (error) { // 에러 발생
+                    console.log("[인덱스 JAVASCRIPT 로딩 에러]");
+                    console.log(error);
                 });
-            }
-
-        }
-
-        // 공용 메소드 호출 함수
-        $("#funcRestrictedByAuth-public").click(function () {
-            $.ajax({
-                url: "/public/test",
-                type: "GET",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                headers: createAuthorizationTokenHeader(),
-                success: function (data, textStatus, jqXHR) {
-                    showResponse(jqXHR.status, data);
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    if (jqXHR.status === 401) {
-                        showResponse(jqXHR.status, "401");
-                    }
-                    if (jqXHR.status === 403) {
-                        showResponse(jqXHR.status, "403");
-                    }
-                }
-            });
         });
-
-        $("#funcRestrictedByAuth-adminOnly").click(function () {
-            $.ajax({
-                url: "/admin/test",
-                type: "GET",
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                headers: createAuthorizationTokenHeader(),
-                success: function (data, textStatus, jqXHR) {
-                    showResponse(jqXHR.status, data);
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    if (jqXHR.status === 401) {
-                        showResponse(jqXHR.status, "401");
-                    }
-                    if (jqXHR.status === 403) {
-                        showResponse(jqXHR.status, "403");
-                    }
-                }
-            });
-        });
-
-
     </script>
 </div>
 

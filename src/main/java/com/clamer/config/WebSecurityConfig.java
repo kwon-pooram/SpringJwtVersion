@@ -82,11 +82,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         HttpMethod.GET,
                         "/favicon.ico",
                         "/js/**",
-                        "/css/**"
+                        "/css/**",
+                        "/img/**"
                 ).permitAll()
 
                 /**
-                 * 인증 URI
+                 * JWT 인증 관련 URI
                  * */
                 .antMatchers("/auth/**").permitAll()
 
