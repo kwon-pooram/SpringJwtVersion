@@ -1,18 +1,15 @@
 package com.clamer.controller;
 
-import com.clamer.service.JwtUserDetailsServiceImpl;
-import com.clamer.utility.jwt.JwtAuthenticationRequest;
-import com.clamer.utility.jwt.JwtAuthenticationResponse;
 import com.clamer.domain.JwtUser;
 import com.clamer.service.JwtService;
+import com.clamer.service.JwtUserDetailsServiceImpl;
+import com.clamer.utility.exception.GeneralException;
+import com.clamer.utility.jwt.JwtAuthenticationRequest;
+import com.clamer.utility.jwt.JwtAuthenticationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mobile.device.Device;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,19 +22,20 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/auth")
 public class AuthenticationRestController {
 
-//    인증 및 JWT 컨트롤러
+    /**********************************************************************
+     *
+     * 인증 및 JWT 관련 메소드 컨트롤러 : /auth/**
+     *
+     **********************************************************************/
 
-    private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final JwtUserDetailsServiceImpl jwtUserDetailsService;
 
     @Autowired
-    public AuthenticationRestController(AuthenticationManager authenticationManager, JwtService jwtService, JwtUserDetailsServiceImpl jwtUserDetailsService) {
-        this.authenticationManager = authenticationManager;
+    public AuthenticationRestController(JwtService jwtService, JwtUserDetailsServiceImpl jwtUserDetailsService) {
         this.jwtService = jwtService;
         this.jwtUserDetailsService = jwtUserDetailsService;
     }
-
 
 
     /**
@@ -46,19 +44,13 @@ public class AuthenticationRestController {
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtAuthenticationRequest authenticationRequest, Device device) throws AuthenticationException {
 
-//        기존 인증 과정, 토큰 방식 사용시 불필요
-//        final Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(
-//                        authenticationRequest.getUsername(),
-//                        authenticationRequest.getPassword()
-//                )
-//        );
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-
-
-
 //        JWT 생성을 위해 유저 정보 다시 불러오기
         final UserDetails userDetails = jwtUserDetailsService.loadUserByUsername(authenticationRequest.getUsername());
+
+        // 이메일 인증되지 않은 사용자는 로그인 불가
+        if (!userDetails.isEnabled()) {
+            throw new GeneralException("이메일 인증 후 로그인 가능합니다.");
+        }
 
 //        JWT 생성
         final String token = jwtService.generateToken(userDetails, device);
@@ -94,6 +86,7 @@ public class AuthenticationRestController {
 
     /**
      * 리퀘스트에서 토큰 정보를 가져와서 JWT 유저 객체로 반환
+     * 뷰로 넘어가는 객체
      **/
     @RequestMapping(value = "user", method = RequestMethod.GET)
     public JwtUser getAuthenticatedUser(HttpServletRequest request) {

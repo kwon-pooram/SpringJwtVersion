@@ -10,6 +10,7 @@ loginBtn.click(function (event) {
 
     event.preventDefault();
 
+    // 이미 로그인 한 사용자가 다시 로그인 시도 할 경우
     if (getJwtToken()) {
         if (window.confirm("이미 로그인 상태입니다.\n기존 로그인 정보가 삭제됩니다. 진행하시겠습니까?") === true) {
             // 기존 로그인 정보 삭제 (토큰 삭제)

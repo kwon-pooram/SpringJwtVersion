@@ -7,7 +7,12 @@ import java.io.Serializable;
  */
 public class  JwtAuthenticationRequest implements Serializable {
 
-//    JWT 인증 리퀘스트 객체
+    /**********************************************************************
+     *
+     * JWT 인증 과정에서 사용자 입력 정보를 담을 리퀘스트 객체
+     * 로그인 폼에 입력한 유저 네임, 비밀번호
+     *
+     **********************************************************************/
 
     private String username;
     private String password;

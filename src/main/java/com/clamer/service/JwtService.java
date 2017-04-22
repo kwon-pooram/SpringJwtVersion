@@ -19,7 +19,7 @@ public class JwtService implements Serializable {
     /**
      * www.jsonwebtoken.io
      * !! 너무 많은 내용 담으면 오버헤드 발생 !!
-     * <p>
+     *
      * - 라이브러리 기본 제공 클레임
      * String ISSUER = "iss"; 토큰 발급자 (Clamer)
      * String SUBJECT = "sub"; 토큰 소유 유저 네임
@@ -231,7 +231,7 @@ public class JwtService implements Serializable {
     }
 
 
-    //    토큰 인증 메소드
+    //    토큰 검증 메소드
     public Boolean validateToken(String token, UserDetails userDetails) {
         JwtUser user = (JwtUser) userDetails;
         final String usernameFromToken = getUsernameFromToken(token);

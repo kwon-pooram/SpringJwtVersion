@@ -23,6 +23,9 @@
                             <li>
                                 user2 / user2 : USER
                             </li>
+                            <li>
+                                user3 / user3 : API_ALLOWED (REST API 직접 접근 가능 권한)
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -51,7 +54,7 @@
                             AJAX 반응형 검색
                         </button>
                     </div>
-                    <div id="ajaxReactiveSearch" class="collapse show" role="tabpanel"
+                    <div id="ajaxReactiveSearch" class="collapse" role="tabpanel"
                          aria-labelledby="ajaxReactiveSearchHeader">
                         <div class="card card-inverse card-primary">
                             <div class="card-block">
@@ -109,7 +112,7 @@
                                     <p>요청 결과</p>
                                     <div class="card">
                                         <div class="card-block" id="funcRestrictedByAuth-result">
-                                            <p class="card-text" style="color:black;"></p>
+                                            <div class="card-text" style="color:black;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -118,16 +121,30 @@
                     </div>
                 </div>
                 <div class="card">
-                    <div class="card-header" role="tab" id="headingThree">
+                    <div class="card-header" role="tab" id="callRestApiHeader">
                         <button class="btn btn-success btn-block collapsed" data-toggle="collapse"
                                 data-parent="#serverRequestTestAccordion"
-                                data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                            이건 글쎄..
+                                data-target="#callRestApi" aria-expanded="false" aria-controls="collapseThree">
+                            REST API 직접 접근
                         </button>
                     </div>
-                    <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
-                        <div class="card-block">
-                            아직 미정...
+                    <div id="callRestApi" class="collapse" role="tabpanel" aria-labelledby="callRestApiHeader">
+                        <div class="card card-inverse card-primary">
+                            <div class="card-block">
+                                <button type="button" class="btn btn-secondary" id="callRestApi-btn">
+                                    REST API 목록 확인
+                                </button>
+                                <div class="card-text">
+                                    <hr/>
+                                    <p>요청 결과</p>
+                                    <p>(목록 클릭시 반환 정보는 콘솔에서 확인 가능)</p>
+                                    <div class="card">
+                                        <div class="card-block" id="callRestApi-result">
+                                            <div class="card-text" style="color:black;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -46,9 +46,15 @@ public class JwtApplication implements CommandLineRunner {
 		Authority userAuthority = new Authority();
 		userAuthority.setAuthorityType(AuthorityType.ROLE_USER);
 
+//		API_ALLOWED Authority
+		Authority apiAllowedAuthority = new Authority();
+		apiAllowedAuthority.setAuthorityType(AuthorityType.ROLE_API_ALLOWED);
+
+
 //		Save Authorities
 		authorityRepository.save(adminAuthority);
 		authorityRepository.save(userAuthority);
+		authorityRepository.save(apiAllowedAuthority);
 
 //		user1
 		List<Authority> authorityListForUser1 = new ArrayList<>();
@@ -89,6 +95,25 @@ public class JwtApplication implements CommandLineRunner {
 		user2.setAuthorities(authorityListForUser2);
 
 		userRepository.save(user2);
+
+
+//		user 3
+		List<Authority> authorityListForUser3 = new ArrayList<>();
+		authorityListForUser3.add(apiAllowedAuthority);
+		User user3 = new User();
+		user3.setEmail("user3@test.com");
+		user3.setUsername("user3");
+		user3.setPassword(bCryptPasswordEncoder.encode("user3"));
+
+		user3.setEnabled(true);
+		user3.setCredentialsNonExpired(true);
+		user3.setAccountNonExpired(true);
+		user3.setAccountNonLocked(true);
+
+		user3.setPasswordUpdatedAt(new Date());
+		user3.setAuthorities(authorityListForUser3);
+
+		userRepository.save(user3);
 
 	}
 }

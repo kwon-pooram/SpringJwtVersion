@@ -19,8 +19,15 @@ import java.io.IOException;
 
 public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
-    // 인증 필터
-    // 클라이언트에서 서버 호출시 항상 필터를 거쳐서 인증 과정 수행
+    /**********************************************************************
+     *
+     * JWT 인증 필터
+     * @see com.clamer.config.WebSecurityConfig 클래스에서 필터 등록
+     *
+     * 클라이언트와 서버 간의 모든 통신은 항상 이 필터를 거침.
+     * 리퀘스트 객체 헤더에 담긴 JWT 를 이용하여 인증 과정 수행.
+     *
+     **********************************************************************/
 
     private final Log logger = LogFactory.getLog(this.getClass());
 
@@ -35,17 +42,28 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+
+        // 리퀘스트 헤더에서 "Authorization" 이름으로 등록되어 있는 JWT 가져오기
         String tokenHeader = "Authorization";
         String token = request.getHeader(tokenHeader);
+
+        // 가져온 JWT 에서 사용자 이름 추출
         String username = jwtService.getUsernameFromToken(token);
 
         logger.info("[" + username + "] 사용자 인증 처리중");
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+        // 사용자 이름이 NULL이 아니고
+        if (username != null
+                // STATELESS 세션 적용되고 있는지 (세션에 저장된 정보가 있는지 없는지 확인)
+                && SecurityContextHolder.getContext().getAuthentication() == null
+                ) {
 
+            // 토큰상의 정보와 DB 에 저장되어 있는 정보 비교를 위해서 데이터베이스에서 정보 가져옴
             UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
 
+            // 유효한 토큰인지 검증 과정 수행
             if (jwtService.validateToken(token, userDetails)) {
+
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(authentication);

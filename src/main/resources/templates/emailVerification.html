@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorator="layout/layout">
+
+<th:block layout:fragment="description">
+    <title>Home Page</title>
+</th:block>
+
+<div class="container" layout:fragment="content">
+    <h1>Email Verification</h1>
+    <form id="emailVerificationForm">
+        <div class="card card-inverse card-danger" id="emailVerificationForm-error" style="margin: 30px; display: none;">
+            <div class="card-block">
+                <h2 class="card-title">오류가 발생했습니다</h2>
+                <p class="card-text"></p>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="emailVerificationEmailAddress" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="email" class="form-control" id="emailVerificationEmailAddress" placeholder="Email" required="required"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="emailVerificationCode" class="col-sm-2 col-form-label">Verification Code</label>
+            <div class="col-sm-10">
+                <input type="text" class="form-control" id="emailVerificationCode" placeholder="Verification Code" required="required"/>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="offset-sm-2 col-sm-10">
+                <button type="submit" class="btn btn-primary">인증하기</button>
+                <br/>
+                <a th:href="@{/registration}">Registration</a>
+                <a th:href="@{/login}">Login</a>
+                <a th:href="@{/resendVerificationEmail}">Request new verification Email</a>
+            </div>
+        </div>
+    </form>
+
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+    <!---->
+
+    <script>
+
+        // JS 목록
+        const EMAIL_VERIFICATION_JAVASCRIPT_ARRAY = [
+            "emailVerification.js"
+        ];
+
+        // CSS 목록
+        const EMAIL_VERIFICATION_CSS_ARRAY = [
+            "emailVerification.css"
+        ];
+
+        $(document).ready(function () {
+
+            // CSS 로딩
+            CSS_LOADER(EMAIL_VERIFICATION_CSS_ARRAY, "/css/")
+                .done(function () { // 호출 성공
+                    console.log("[이메일 인증 CSS 로딩 완료]");
+                })
+                .fail(function (error) { // 에러 발생
+                    console.log("[이메일 인증 CSS 로딩 에러]");
+                    console.log(error);
+                });
+
+            // JS 로딩
+            SCRIPT_LOADER(EMAIL_VERIFICATION_JAVASCRIPT_ARRAY, "/js/")
+                .done(function () { // 호출 성공
+                    console.log("[이메일 인증 JAVASCRIPT 로딩 완료]");
+
+                    // 스크립트 로딩 완료 후 페이지에서 처리 할 내용
+
+
+                })
+                .fail(function (error) { // 에러 발생
+                    console.log("[이메일 인증 JAVASCRIPT 로딩 에러]");
+                    console.log(error);
+                });
+        });
+    </script>
+</div>
+</html>

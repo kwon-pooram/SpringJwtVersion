@@ -1,7 +1,8 @@
 /**
  * Created by sungman.you on 2017. 4. 21..
  */
-
+    // 에러 뷰 표시
+const loginFormErrorView = $("#loginForm-error");
 
 // 로그인 폼 submit 함수
 $("#loginForm").submit(function (event) {
@@ -42,13 +43,25 @@ function submitLoginForm(formData) {
              * 에러 처리 :  Response Status 따라서 다른 에러 처리
              * */
 
-            // 401 에러 : 접근 권한 없음
-            if (jqXHR.status === 401) {
-                console.log("[로그인 에러] : 401");
+            // 406 에러 : 허용되지 않음 (NOT_ACCEPTABLE)
+            if (jqXHR.status === 406) {
+                console.log("[로그인 에러] : 406");
+                loginFormErrorView
+                    .find(".card-text")
+                    .empty()
+                    .html(`
+                                   <p>로그인에 실패했습니다.</p>
+                                   <p>원인 : <span id="loginErrorCausedBy"></span></p>
+                                 `);
+                $("#loginErrorCausedBy").text(jqXHR.responseText);
+                loginFormErrorView
+                    .show();
+            }
 
-                // 에러 뷰 표시
-                const errorView = $("#loginForm-error");
-                errorView
+            // 401 에러 : 접근 권한 없음
+            else if (jqXHR.status === 401) {
+                console.log("[로그인 에러] : 401");
+                loginFormErrorView
                     .find(".card-text")
                     .empty()
                     .html(`
@@ -59,7 +72,7 @@ function submitLoginForm(formData) {
                                         아이디 / 비밀번호 찾기
                                    </button>
                                  `);
-                errorView
+                loginFormErrorView
                     .show();
             } else {
                 throw new Error("[로그인 에러] : " + errorThrown);

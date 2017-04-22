@@ -1,5 +1,9 @@
 /**
  * Created by sungman.you on 2017. 4. 21..
+ *
+ *
+ *
+ * 자주 사용하는 JWT 인증 관련 함수들
  */
 
 // 토큰 이름
@@ -32,4 +36,12 @@ function createAuthorizationTokenHeader() {
         // 빈 헤더
         return {};
     }
+}
+
+// 로그아웃 함수
+function logout() {
+    // 로컬스토리지 토큰 삭제
+    removeJwtToken();
+    // 인덱스 화면 리디렉트
+    window.location.replace("/index");
 }

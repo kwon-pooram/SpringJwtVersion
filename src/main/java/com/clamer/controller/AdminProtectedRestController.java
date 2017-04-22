@@ -13,9 +13,15 @@ import java.util.Map;
 @RequestMapping("/admin")
 public class AdminProtectedRestController {
 
-    //    사용자 권한에 따라서 메소드 단위로 허용 범위 설정
-    //    실제 DB에 저장할때는 'ROLE_' 앞에 붙여서 저장
-    //    ex) ROLE_ADMIN, ROLE_USER
+    /**********************************************************************
+     *
+     * ROLE_ADMIN 권한 계정 전용 메소드 컨트롤러 : /admin/**
+     *
+     * 사용자 권한에 따라서 메소드 단위로 허용 범위 설정
+     * 실제 DB에 저장할때는 'ROLE_' 앞에 붙여서 저장
+     * ex) ROLE_ADMIN, ROLE_USER
+     *
+     **********************************************************************/
 
     @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = {"/test"}, method = RequestMethod.GET)

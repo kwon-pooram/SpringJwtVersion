@@ -25,9 +25,6 @@ public class User extends BaseEntity implements Serializable {
     @NotNull
     private String password;
 
-    @Transient // 회원 가입시 비밀번호 재확인 (DB 저장 안함)
-    private String passwordConfirmation;
-
     @Column(columnDefinition = "boolean default true") // 자격 만료 여부 (토큰 만료)
     private boolean credentialsNonExpired;
 
@@ -50,4 +47,12 @@ public class User extends BaseEntity implements Serializable {
     @JoinTable(joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "authority_id", referencedColumnName = "id")})
     private List<Authority> authorities;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<Address> addresses;
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<Studio> studios;
 }
